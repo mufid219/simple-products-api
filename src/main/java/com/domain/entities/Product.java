@@ -4,6 +4,9 @@ package com.domain.entities;
 import java.io.Serializable;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +21,10 @@ import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "products")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id"
+)
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,7 +41,6 @@ public class Product implements Serializable {
     @NotEmpty(message = "description is required")
     private String description;
 
-    @NotEmpty(message = "price is required")
     private Double price;
 
     @ManyToOne
@@ -47,6 +53,7 @@ public class Product implements Serializable {
         joinColumns = @JoinColumn(name = "product_id"),
         inverseJoinColumns = @JoinColumn(name = "supplier_id")
     )
+    // @JsonManagedReference
     private Set<Supplier> suppliers;
 
     public Product() {
