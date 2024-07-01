@@ -1,7 +1,6 @@
 package com.domain.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.domain.dto.ResponseData;
+import com.domain.dto.SearchDataDTO;
 import com.domain.entities.Product;
 import com.domain.entities.Supplier;
 import com.domain.services.ProductService;
@@ -95,5 +95,24 @@ public class ProductController {
         productService.addSupplier(supplier, productId);
     }
 
+    @PostMapping("/search/name")
+    public Product getProductByName(@RequestBody SearchDataDTO searchDataDTO){
+        return productService.findProductByName(searchDataDTO.getSearchKey());
+    }
+
+    @PostMapping("/search/namelike")
+    public List<Product> getProductByNameLike(@RequestBody SearchDataDTO searchDataDTO){
+        return productService.findProductByNameLike(searchDataDTO.getSearchKey());
+    }
+
+    @GetMapping("/search/category/{categoryId}")
+    public List<Product> getProductByCategory(@PathVariable("categoryId") Long categoryId){
+        return productService.findProductByCategory(categoryId);
+    }
+
+    @GetMapping("/search/supplier/{supplierId}")
+    public List<Product> getProductBySupplier(@PathVariable("supplierId") Long supplierId){
+        return productService.findProductBySupplier(supplierId);
+    }
 
 }
